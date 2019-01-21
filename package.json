@@ -1,0 +1,34 @@
+{
+  "name": "react-web-voice",
+  "version": "0.1.0",
+  "description": "web speech and recognition as react hook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Duong Tran",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1"
+  },
+  "devDependencies": {
+    "@types/react": "16.7.20",
+    "@types/react-dom": "16.0.11",
+    "awesome-typescript-loader": "5.2.1",
+    "html-loader": "0.5.5",
+    "html-webpack-plugin": "3.2.0",
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1",
+    "rollup": "1.1.0",
+    "rollup-plugin-commonjs": "9.2.0",
+    "rollup-plugin-node-resolve": "4.0.0",
+    "rollup-plugin-sourcemaps": "0.4.2",
+    "rollup-plugin-typescript2": "0.19.2",
+    "source-map-loader": "0.2.4",
+    "typescript": "3.2.4",
+    "webpack": "4.29.0",
+    "webpack-cli": "3.2.1",
+    "webpack-dev-server": "3.1.14"
+  }
+}
