@@ -12,6 +12,7 @@
   },
   "author": "Duong Tran",
   "license": "MIT",
+  "homepage": "https://github.com/t49tran/react-web-voice",
   "peerDependencies": {
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1"
