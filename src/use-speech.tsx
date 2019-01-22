@@ -1,35 +1,44 @@
 import * as React from 'react';
 
-export interface IWebVoiceSpeechMessage {
-  text: string;
-  onSpeakEnd?: (event: SpeechSynthesisEvent) => void;
-}
+const defaultSpeechConfig = {
+  voice: 'Google US English'
+};
 
-export interface IUseSpeechConfig {
-  voice?: string;
-}
-
-const generateMessage = ({ text, onSpeakEnd }: IWebVoiceSpeechMessage) => {
+const generateMessage = (
+  { text, volume = 1, rate = 1, pitch = 1, onSpeakEnd }: IWebVoiceSpeechMessage,
+  config: IUseSpeechConfig
+) => {
   const message = new SpeechSynthesisUtterance();
 
   message.text = text;
 
-  message.volume = 1;
-  message.rate = 1;
-  message.pitch = 1;
-  // set callback here
+  message.volume = volume;
+  message.rate = rate;
+  message.pitch = pitch;
+
+  // set callback once the speak finish here here
   if (onSpeakEnd) {
     message.onend = onSpeakEnd;
   }
 
   message.voice = speechSynthesis
     .getVoices()
-    .find(voice => voice.name === 'Google US English') as SpeechSynthesisVoice;
+    .find(voice => voice.name === config.voice) as SpeechSynthesisVoice;
 
   return message;
 };
 
-const defaultSpeechConfig = {};
+export interface IWebVoiceSpeechMessage {
+  text: string;
+  volume?: number;
+  rate?: number;
+  pitch?: number;
+  onSpeakEnd?: (event: SpeechSynthesisEvent) => void;
+}
+
+export interface IUseSpeechConfig {
+  voice?: string;
+}
 
 export const useSpeech = (config: IUseSpeechConfig = defaultSpeechConfig) => {
   const [messages, setMessages] = React.useState<IWebVoiceSpeechMessage[]>([]);
@@ -41,7 +50,7 @@ export const useSpeech = (config: IUseSpeechConfig = defaultSpeechConfig) => {
 
     setMessages([...messages, message]);
 
-    window.speechSynthesis.speak(generateMessage(message));
+    window.speechSynthesis.speak(generateMessage(message, config));
   };
 
   return { messages, speak };
