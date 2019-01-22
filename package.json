@@ -4,7 +4,7 @@
   "description": "web speech and recognition as react hook",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose --env=jsdom"
   },
   "author": "Duong Tran",
   "license": "MIT",
@@ -13,11 +13,17 @@
     "react-dom": "16.8.0-alpha.1"
   },
   "devDependencies": {
+    "@types/enzyme": "3.1.15",
+    "@types/enzyme-adapter-react-16": "1.0.3",
+    "@types/jest": "23.3.13",
     "@types/react": "16.7.20",
     "@types/react-dom": "16.0.11",
     "awesome-typescript-loader": "5.2.1",
+    "enzyme": "3.8.0",
+    "enzyme-adapter-react-16": "1.7.1",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
+    "jest": "23.6.0",
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1",
     "rollup": "1.1.0",
@@ -26,6 +32,7 @@
     "rollup-plugin-sourcemaps": "0.4.2",
     "rollup-plugin-typescript2": "0.19.2",
     "source-map-loader": "0.2.4",
+    "ts-jest": "23.10.5",
     "typescript": "3.2.4",
     "webpack": "4.29.0",
     "webpack-cli": "3.2.1",
