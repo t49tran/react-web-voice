@@ -1,6 +1,6 @@
 {
   "name": "react-web-voice",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "web speech and recognition as react hook",
   "module": "dist/react-web-voice.esm.js",
   "main": "dist/react-web-voice.cjs.js",
