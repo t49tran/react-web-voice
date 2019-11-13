@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { useState, useCallback } from 'react';
 
 const defaultSpeechConfig = {
   voice: 'Google US English'
 };
 
 const generateMessage = (
-  { text, volume = 1, rate = 1, pitch = 1, onSpeakEnd }: IWebVoiceSpeechMessage,
+  { text, volume = 1, rate = 1, pitch = 1 }: IWebVoiceSpeechMessage,
   config: IUseSpeechConfig
 ) => {
   const message = new SpeechSynthesisUtterance();
@@ -15,11 +15,6 @@ const generateMessage = (
   message.volume = volume;
   message.rate = rate;
   message.pitch = pitch;
-
-  // set callback once the speak finish here here
-  if (onSpeakEnd) {
-    message.onend = onSpeakEnd;
-  }
 
   message.voice = speechSynthesis
     .getVoices()
@@ -33,7 +28,6 @@ export interface IWebVoiceSpeechMessage {
   volume?: number;
   rate?: number;
   pitch?: number;
-  onSpeakEnd?: (event: SpeechSynthesisEvent) => void;
 }
 
 export interface IUseSpeechConfig {
@@ -41,17 +35,27 @@ export interface IUseSpeechConfig {
 }
 
 export const useSpeech = (config: IUseSpeechConfig = defaultSpeechConfig) => {
-  const [messages, setMessages] = React.useState<IWebVoiceSpeechMessage[]>([]);
+  const [messages, setMessages] = useState<IWebVoiceSpeechMessage[]>([]);
 
-  const speak = (message: IWebVoiceSpeechMessage) => {
-    if (!window || !window.speechSynthesis) {
-      throw new Error('Web Speech is not supported by your browser');
-    }
+  const speak = useCallback(
+    async (message: IWebVoiceSpeechMessage) =>
+      new Promise((resolve, reject) => {
+        if (!window || !window.speechSynthesis) {
+          reject('Web Speech is not supported by your browser');
+        }
 
-    setMessages([...messages, message]);
+        setMessages([...messages, message]);
 
-    window.speechSynthesis.speak(generateMessage(message, config));
-  };
+        const speechUtterance = generateMessage(message, config);
+
+        speechUtterance.onend = () => {
+          resolve(speechUtterance);
+        };
+
+        window.speechSynthesis.speak(speechUtterance);
+      }),
+    [config]
+  );
 
   return { messages, speak };
 };
