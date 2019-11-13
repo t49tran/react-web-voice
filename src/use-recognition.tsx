@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-export type RecognitionCallback = (recognizedText: string) => void;
+import { useCallback, useMemo } from 'react';
 
 export const getSpeechRecognition = () => {
   if (!window || !(window as any).webkitSpeechRecognition) {
@@ -17,31 +16,35 @@ export const getSpeechRecognition = () => {
 export const useRecognition = () => {
   const [transcripts, setTranscripts] = React.useState<string[]>([]);
 
-  const listen = (recognitionCallback: RecognitionCallback) => {
-    const speechRecognition = getSpeechRecognition();
+  const listen = useCallback(
+    async () =>
+      new Promise((resolve, reject) => {
+        const speechRecognition = getSpeechRecognition();
 
-    speechRecognition.onresult = (event: SpeechRecognitionEvent) => {
-      const finalResult = Array.from(event.results).find(
-        entry => entry.isFinal
-      );
+        speechRecognition.onresult = (event: SpeechRecognitionEvent) => {
+          const finalResult = Array.from(event.results).find(
+            entry => entry.isFinal
+          );
 
-      // If it's not the final result yet, just ignore
-      if (!finalResult) {
-        return;
-      }
+          // If it's not the final result yet, just ignore
+          if (!finalResult) {
+            return;
+          }
 
-      // stop the recognition process
-      speechRecognition.stop();
+          // stop the recognition process
+          speechRecognition.stop();
 
-      const { transcript } = finalResult[0];
+          const { transcript } = finalResult[0];
 
-      setTranscripts([...transcripts, transcript]);
+          setTranscripts([...transcripts, transcript]);
 
-      // trigger the callback
-      recognitionCallback(transcript);
-    };
-    speechRecognition.start();
-  };
+          resolve(transcript);
+        };
 
-  return { transcripts, listen };
+        speechRecognition.start();
+      }),
+    [setTranscripts]
+  );
+
+  return useMemo(() => ({ transcripts, listen }), [transcripts]);
 };
