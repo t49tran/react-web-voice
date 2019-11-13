@@ -5,12 +5,12 @@ export const WebRecognitionExample: React.FunctionComponent = () => {
   const [isListening, setIsListening] = React.useState(false);
   const { transcripts, listen } = useRecognition();
 
-  const speakClickHandler = () => {
+  const speakClickHandler = async () => {
     setIsListening(true);
 
-    listen(() => {
-      setIsListening(false);
-    });
+    const recognizedMessage = await listen();
+
+    console.log(recognizedMessage);
   };
 
   return (
