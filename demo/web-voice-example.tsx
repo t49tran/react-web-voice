@@ -9,8 +9,10 @@ export const WebVoiceExample: React.FunctionComponent = () => {
     setMessageToSpeak(evt.target.value);
   };
 
-  const speakClickHandler = () => {
-    speak({ text: messageToSpeak });
+  const speakClickHandler = async () => {
+    const utterance = await speak({ text: messageToSpeak });
+
+    console.log(utterance);
   };
 
   return (
